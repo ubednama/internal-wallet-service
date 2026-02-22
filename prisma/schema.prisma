@@ -1,0 +1,82 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String   @db.VarChar(100)
+  email      String   @unique @db.VarChar(255)
+  created_at DateTime @default(now()) @db.Timestamptz()
+  updated_at DateTime @default(now()) @updatedAt @db.Timestamptz()
+
+  wallets Wallet[]
+
+  @@map("users")
+}
+
+model Asset {
+  id      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  symbol  String   @unique @db.VarChar(50)
+  name    String   @db.VarChar(100)
+  wallets Wallet[]
+
+  @@map("assets")
+}
+
+model Wallet {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String   @db.Uuid
+  asset_id   String   @db.Uuid
+  balance    Decimal  @default(0) @db.Decimal(18, 4)
+  created_at DateTime @default(now()) @db.Timestamptz()
+  updated_at DateTime @default(now()) @updatedAt @db.Timestamptz()
+
+  user  User  @relation(fields: [user_id], references: [id])
+  asset Asset @relation(fields: [asset_id], references: [id])
+
+  sentTransactions     Transaction[]  @relation("FromWallet")
+  receivedTransactions Transaction[]  @relation("ToWallet")
+  ledgerEntries        LedgerEntry[]
+
+  @@unique([user_id, asset_id])
+  @@map("wallets")
+}
+
+model Transaction {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  idempotency_key String   @unique @db.VarChar(255)
+  from_wallet_id  String   @db.Uuid
+  to_wallet_id    String   @db.Uuid
+  amount          Decimal  @db.Decimal(18, 4)
+  type            String   @db.VarChar(50)
+  status          String   @default("SUCCESS") @db.VarChar(50)
+  created_at      DateTime @default(now()) @db.Timestamptz()
+
+  from_wallet   Wallet        @relation("FromWallet", fields: [from_wallet_id], references: [id])
+  to_wallet     Wallet        @relation("ToWallet",   fields: [to_wallet_id],   references: [id])
+  ledgerEntries LedgerEntry[]
+
+  @@index([from_wallet_id, to_wallet_id])
+  @@map("transactions")
+}
+
+model LedgerEntry {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  transaction_id String   @db.Uuid
+  wallet_id      String   @db.Uuid
+  entry_type     String   @db.VarChar(10)   // "DEBIT" or "CREDIT"
+  amount         Decimal  @db.Decimal(18, 4)
+  balance_after  Decimal  @db.Decimal(18, 4)
+  created_at     DateTime @default(now()) @db.Timestamptz()
+
+  transaction Transaction @relation(fields: [transaction_id], references: [id])
+  wallet      Wallet      @relation(fields: [wallet_id],      references: [id])
+
+  @@index([wallet_id, created_at(sort: Desc)])
+  @@index([transaction_id])
+  @@map("ledger_entries")
+}

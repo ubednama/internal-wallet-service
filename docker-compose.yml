@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: wallet_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: wallet_redis
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  wallet-service:
+    build: .
+    container_name: wallet_api
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@db:5432/postgres
+      - DIRECT_URL=postgresql://postgres:password@db:5432/postgres
+      - REDIS_URL=redis://redis:6379
+      - LOG_LEVEL=debug
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./logs:/usr/src/app/logs
+    restart: on-failure
+
+  init-db:
+    image: postgres:15-alpine
+    container_name: wallet_seeder
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./db_init.sql:/docker-entrypoint-initdb.d/01_db_init.sql
+      - ./seed.sql:/docker-entrypoint-initdb.d/02_seed.sql
+    environment:
+      PGPASSWORD: password
+    command: >
+      sh -c "psql -h db -U postgres -d postgres -f /docker-entrypoint-initdb.d/01_db_init.sql &&
+             psql -h db -U postgres -d postgres -f /docker-entrypoint-initdb.d/02_seed.sql"
+
+volumes:
+  postgres_data:
