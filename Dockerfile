@@ -3,11 +3,9 @@ FROM node:20-alpine AS builder
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY . .
 
 RUN npm ci
-
-COPY . .
 
 # Build TypeScript
 RUN npm run build
