@@ -1,0 +1,2618 @@
+{
+  "info": {
+    "_postman_id": "be8b1c97-8b6f-4a7f-a1e1-7c8da234fca3",
+    "name": "Internal Wallet Service",
+    "description": "Virtual wallet service API — manages TOP_UP, BONUS, and SPEND transactions with double-entry ledger, deadlock avoidance, and idempotency guarantees.\n\nSeeded user IDs:\n- Treasury:  00000000-0000-0000-0000-000000000001\n- Alice:     00000000-0000-0000-0000-000000000002 (500 GOLD)\n- Bob:       00000000-0000-0000-0000-000000000003 (1000 GOLD)\n- Charlie:   00000000-0000-0000-0000-000000000004 (50 DIAMOND)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "32782602",
+    "_collection_link": "https://go.postman.co/collection/32782602-be8b1c97-8b6f-4a7f-a1e1-7c8da234fca3?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:26:59 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "51"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d23f69f8da384d1-BOM"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"36-SZ6zeWEDiqvJexnL/YD6Qo1MtwM\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "db20190f-6f2a-45b8"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"OK\",\n    \"timestamp\": \"2026-02-23T04:26:59.443Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Balance",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/wallets/{{userId}}/balance?asset={{assetSymbol}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "wallets",
+            "{{userId}}",
+            "balance"
+          ],
+          "query": [
+            {
+              "key": "asset",
+              "value": "{{assetSymbol}}"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 OK - USER",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/{{userId}}/balance?asset={{assetSymbol}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "{{userId}}",
+                "balance"
+              ],
+              "query": [
+                {
+                  "key": "asset",
+                  "value": "{{assetSymbol}}"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:28:53 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "139"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d23fa967c323a51-BOM"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"bb-vDDhZfL49n2NoG8nHcF3nQL4lzM\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "ratelimit-limit",
+              "value": "1000"
+            },
+            {
+              "key": "ratelimit-policy",
+              "value": "1000;w=900"
+            },
+            {
+              "key": "ratelimit-remaining",
+              "value": "999"
+            },
+            {
+              "key": "ratelimit-reset",
+              "value": "900"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "d3443972-f05e-487e"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"SUCCESS\",\n    \"data\": {\n        \"userId\": \"00000000-0000-0000-0000-000000000002\",\n        \"assetSymbol\": \"GOLD\",\n        \"balance\": 440\n    },\n    \"timestamp\": \"2026-02-23T04:28:53.866Z\",\n    \"requestId\": \"1771820931755-6qreamd\"\n}"
+        },
+        {
+          "name": "200 OK - SYSTEM",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/{{userId}}/balance?asset={{assetSymbol}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "{{userId}}",
+                "balance"
+              ],
+              "query": [
+                {
+                  "key": "asset",
+                  "value": "{{assetSymbol}}"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:29:28 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "139"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d23fb70acfc3a51-BOM"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"be-ttsu2HgDwLb7qgkb1SYeI8hihG8\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "ratelimit-limit",
+              "value": "1000"
+            },
+            {
+              "key": "ratelimit-policy",
+              "value": "1000;w=900"
+            },
+            {
+              "key": "ratelimit-remaining",
+              "value": "998"
+            },
+            {
+              "key": "ratelimit-reset",
+              "value": "866"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "2b65e12a-4676-440f"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"SUCCESS\",\n    \"data\": {\n        \"userId\": \"00000000-0000-0000-0000-000000000001\",\n        \"assetSymbol\": \"GOLD\",\n        \"balance\": 999840\n    },\n    \"timestamp\": \"2026-02-23T04:29:28.275Z\",\n    \"requestId\": \"1771820966657-0rl6h69\"\n}"
+        },
+        {
+          "name": "404 Not Found — User not found",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/{{userId}}/balance?asset={{assetSymbol}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "{{userId}}",
+                "balance"
+              ],
+              "query": [
+                {
+                  "key": "asset",
+                  "value": "{{assetSymbol}}"
+                }
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:30:11 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "95"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d23fc7e88c1937d-MAA"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"78-rgERiR5pVa5oxjrjBV7f4CnzzHI\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "ratelimit-limit",
+              "value": "1000"
+            },
+            {
+              "key": "ratelimit-policy",
+              "value": "1000;w=900"
+            },
+            {
+              "key": "ratelimit-remaining",
+              "value": "997"
+            },
+            {
+              "key": "ratelimit-reset",
+              "value": "822"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "3f4aa96f-abd8-4bee"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"FAILED\",\n    \"error\": \"User 00000000-0000-0000-0000-000000000010 not found\",\n    \"timestamp\": \"2026-02-23T04:30:11.232Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Ledger (double-entry)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/wallets/{{userId}}/ledger?asset={{assetSymbol}}&limit=20&offset=0",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "wallets",
+            "{{userId}}",
+            "ledger"
+          ],
+          "query": [
+            {
+              "key": "asset",
+              "value": "{{assetSymbol}}"
+            },
+            {
+              "key": "limit",
+              "value": "20"
+            },
+            {
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/{{userId}}/ledger?asset={{assetSymbol}}&limit=20&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "{{userId}}",
+                "ledger"
+              ],
+              "query": [
+                {
+                  "key": "asset",
+                  "value": "{{assetSymbol}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:31:19 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "763"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d23fe136acd937d-MAA"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"7cb-ZMous0KEj+F6QjcCdnF0kYSOoIk\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "ratelimit-limit",
+              "value": "1000"
+            },
+            {
+              "key": "ratelimit-policy",
+              "value": "1000;w=900"
+            },
+            {
+              "key": "ratelimit-remaining",
+              "value": "995"
+            },
+            {
+              "key": "ratelimit-reset",
+              "value": "757"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "8c5b1555-4037-46e1"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"SUCCESS\",\n    \"data\": {\n        \"entries\": [\n            {\n                \"id\": \"8851d71b-1e2b-4304-abfc-bed2d776d1ff\",\n                \"entryType\": \"DEBIT\",\n                \"amount\": \"30\",\n                \"balanceAfter\": \"440\",\n                \"assetSymbol\": \"GOLD\",\n                \"txId\": \"05c5f26a-85c9-4af3-9bdf-a7957994b1aa\",\n                \"txType\": \"SPEND\",\n                \"createdAt\": \"2026-02-22T21:05:26.078Z\"\n            },\n            {\n                \"id\": \"010ba539-6d34-4b4c-8e5f-471cb871189a\",\n                \"entryType\": \"CREDIT\",\n                \"amount\": \"50\",\n                \"balanceAfter\": \"470\",\n                \"assetSymbol\": \"GOLD\",\n                \"txId\": \"f486fc8e-2dea-4145-9c25-21772d4d4dca\",\n                \"txType\": \"BONUS\",\n                \"createdAt\": \"2026-02-22T21:05:20.244Z\"\n            },\n            {\n                \"id\": \"fb4124e1-4a55-476f-a5ec-7325c6b5c242\",\n                \"entryType\": \"CREDIT\",\n                \"amount\": \"100\",\n                \"balanceAfter\": \"420\",\n                \"assetSymbol\": \"GOLD\",\n                \"txId\": \"89397cc4-958e-457c-a570-17c96c062c34\",\n                \"txType\": \"TOP_UP\",\n                \"createdAt\": \"2026-02-22T21:05:13.961Z\"\n            },\n            {\n                \"id\": \"a7f8957f-ff29-47dc-80e4-a9763a8b1899\",\n                \"entryType\": \"CREDIT\",\n                \"amount\": \"50\",\n                \"balanceAfter\": \"320\",\n                \"assetSymbol\": \"GOLD\",\n                \"txId\": \"c584eee9-0d0d-4d3b-854e-da88b7060c54\",\n                \"txType\": \"TOP_UP\",\n                \"createdAt\": \"2026-02-22T21:03:05.629Z\"\n            },\n            {\n                \"id\": \"3286a5a7-5083-43f9-8555-764189980bfa\",\n                \"entryType\": \"DEBIT\",\n                \"amount\": \"30\",\n                \"balanceAfter\": \"270\",\n                \"assetSymbol\": \"GOLD\",\n                \"txId\": \"b5ac0a80-ad8f-4580-b4ee-eecc4b2cc890\",\n                \"txType\": \"SPEND\",\n                \"createdAt\": \"2026-02-22T21:00:19.489Z\"\n            },\n            {\n                \"id\": \"57d0c065-d720-46fa-9477-755a988b43c9\",\n                \"entryType\": \"CREDIT\",\n                \"amount\": \"50\",\n                \"balanceAfter\": \"300\",\n                \"assetSymbol\": \"GOLD\",\n                \"txId\": \"9bdd112c-84c5-424c-add5-5ee9e44de19e\",\n                \"txType\": \"BONUS\",\n                \"createdAt\": \"2026-02-22T20:59:58.965Z\"\n            },\n            {\n                \"id\": \"57c3a99d-65fc-4824-ac1a-8f68274fbf95\",\n                \"entryType\": \"CREDIT\",\n                \"amount\": \"50\",\n                \"balanceAfter\": \"250\",\n                \"assetSymbol\": \"GOLD\",\n                \"txId\": \"e363da5a-3dac-4113-8b0c-68d6b9ed6e94\",\n                \"txType\": \"BONUS\",\n                \"createdAt\": \"2026-02-22T20:59:50.322Z\"\n            },\n            {\n                \"id\": \"dc574acc-ba68-4b4c-af30-7dcde6997b20\",\n                \"entryType\": \"CREDIT\",\n                \"amount\": \"100\",\n                \"balanceAfter\": \"200\",\n                \"assetSymbol\": \"GOLD\",\n                \"txId\": \"ab8b9e44-e1b7-465e-901a-6cfe8dcdf64a\",\n                \"txType\": \"TOP_UP\",\n                \"createdAt\": \"2026-02-22T20:58:03.011Z\"\n            }\n        ],\n        \"pagination\": {\n            \"total\": 8,\n            \"limit\": 20,\n            \"offset\": 0,\n            \"returned\": 8,\n            \"hasMore\": false\n        }\n    },\n    \"timestamp\": \"2026-02-23T04:31:18.873Z\",\n    \"requestId\": \"1771821075108-ceaoa6j\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Top Up (purchase credits)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"TOP_UP\",\n  \"amount\": {{amount}},\n  \"assetSymbol\": \"{{assetSymbol}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/wallets/transactions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "wallets",
+            "transactions"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "400 Bad Request — Validation error",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"TOP_UP\",\n  \"amount\": {{amount}},\n  \"assetSymbol\": \"{{assetSymbol}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "transactions"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:37:20 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "92"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"FAILED\",\n  \"error\": \"Validation failed: Invalid userId format. Expected UUID string.\",\n  \"timestamp\": \"2026-02-23T04:37:20.123Z\",\n  \"requestId\": \"1771820840123-def456\"\n}"
+        },
+        {
+          "name": "404 Not Found — User has no wallet for asset",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"TOP_UP\",\n  \"amount\": {{amount}},\n  \"assetSymbol\": \"{{assetSymbol}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "transactions"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:37:20 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "115"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"FAILED\",\n  \"error\": \"Wallet not found for user 00000000-0000-0000-0000-000000000005 / DIAMOND\",\n  \"timestamp\": \"2026-02-23T04:37:20.200Z\",\n  \"requestId\": \"1771820840200-ghi789\"\n}"
+        },
+        {
+          "name": "409 Conflict — Concurrent duplicate",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"TOP_UP\",\n  \"amount\": {{amount}},\n  \"assetSymbol\": \"{{assetSymbol}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "transactions"
+              ]
+            }
+          },
+          "status": "Conflict",
+          "code": 409,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:37:20 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "99"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"FAILED\",\n  \"error\": \"Duplicate idempotency key detected. Transaction is currently processing. Please retry later.\",\n  \"timestamp\": \"2026-02-23T04:37:20.300Z\",\n  \"requestId\": \"1771820840300-jkl012\"\n}"
+        },
+        {
+          "name": "200 OK — Success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "ee5aebce-71bc-45d8-992e-91ebbbc16b3d",
+                "disabled": true
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"TOP_UP\",\n  \"amount\": {{amount}},\n  \"assetSymbol\": \"{{assetSymbol}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "transactions"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:37:20 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "76"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d2406df987e9368-MAA"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"52-rtjyAdWNuNLQW8WMvIq1G4l3860\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "ratelimit-limit",
+              "value": "100"
+            },
+            {
+              "key": "ratelimit-policy",
+              "value": "100;w=900"
+            },
+            {
+              "key": "ratelimit-remaining",
+              "value": "99"
+            },
+            {
+              "key": "ratelimit-reset",
+              "value": "900"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "e576dae2-ab60-444c"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"SUCCESS\",\n    \"txId\": \"7ac5a836-752e-4666-bb22-db53389b45dc\",\n    \"balance\": \"540\"\n}"
+        },
+        {
+          "name": "200 OK — Cached (idempotent replay)",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "ee5aebce-71bc-45d8-992e-91ebbbc16b3d"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"TOP_UP\",\n  \"amount\": {{amount}},\n  \"assetSymbol\": \"{{assetSymbol}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "transactions"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:37:56 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "109"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d2407de28359368-MAA"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"7e-EYa0Y6/O8LYkZ6+iHjbQd69XFp4\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "ratelimit-limit",
+              "value": "100"
+            },
+            {
+              "key": "ratelimit-policy",
+              "value": "100;w=900"
+            },
+            {
+              "key": "ratelimit-remaining",
+              "value": "98"
+            },
+            {
+              "key": "ratelimit-reset",
+              "value": "860"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "e4f50e04-f766-4285"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"SUCCESS\",\n    \"txId\": \"eb1c8125-4953-41ca-b6e9-3226a4839b3f\",\n    \"fromBalance\": \"999900\",\n    \"toBalance\": \"1000100\",\n    \"_cached\": true\n}"
+        },
+        {
+          "name": "400 Bad Request — Missing Idempotency-Key",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "ee5aebce-71bc-45d8-992e-91ebbbc16b3d",
+                "disabled": true
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"TOP_UP\",\n  \"amount\": {{amount}},\n  \"assetSymbol\": \"{{assetSymbol}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "transactions"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:37:56 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "109"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d2407de28359368-MAA"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"7e-EYa0Y6/O8LYkZ6+iHjbQd69XFp4\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "ratelimit-limit",
+              "value": "100"
+            },
+            {
+              "key": "ratelimit-policy",
+              "value": "100;w=900"
+            },
+            {
+              "key": "ratelimit-remaining",
+              "value": "98"
+            },
+            {
+              "key": "ratelimit-reset",
+              "value": "860"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "e4f50e04-f766-4285"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"SUCCESS\",\n    \"txId\": \"eb1c8125-4953-41ca-b6e9-3226a4839b3f\",\n    \"fromBalance\": \"999900\",\n    \"toBalance\": \"1000100\",\n    \"_cached\": true\n}"
+        }
+      ]
+    },
+    {
+      "name": "Bonus (issue free credits)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"BONUS\",\n  \"amount\": 50,\n  \"assetSymbol\": \"{{assetSymbol}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/wallets/transactions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "wallets",
+            "transactions"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 OK — Success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"BONUS\",\n  \"amount\": 50,\n  \"assetSymbol\": \"{{assetSymbol}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "transactions"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:39:40 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "75"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d240a49cfec937d-MAA"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"52-OczSJilM22REySJmouHU6bDX8z0\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "ratelimit-limit",
+              "value": "100"
+            },
+            {
+              "key": "ratelimit-policy",
+              "value": "100;w=900"
+            },
+            {
+              "key": "ratelimit-remaining",
+              "value": "97"
+            },
+            {
+              "key": "ratelimit-reset",
+              "value": "761"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "082dde79-5a8f-48b4"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"SUCCESS\",\n    \"txId\": \"532214f1-c471-4667-8224-540761c2f330\",\n    \"balance\": \"590\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Spend (deduct credits)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"SPEND\",\n  \"amount\": 30,\n  \"assetSymbol\": \"{{assetSymbol}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/wallets/transactions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "wallets",
+            "transactions"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "400 Bad Request — Insufficient funds",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"SPEND\",\n  \"amount\": 30,\n  \"assetSymbol\": \"{{assetSymbol}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "transactions"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:40:16 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "85"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"FAILED\",\n  \"error\": \"Insufficient balance. Required: 30 GOLD, Available: 15 GOLD\",\n  \"timestamp\": \"2026-02-23T04:40:16.500Z\",\n  \"requestId\": \"1771821216500-abc123\"\n}"
+        },
+        {
+          "name": "200 OK — Success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"type\": \"SPEND\",\n  \"amount\": 30,\n  \"assetSymbol\": \"{{assetSymbol}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "transactions"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:40:16 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "77"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d240b3168e2937d-MAA"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"52-HvVm3mVIHSqTOVORUQGzsOC9QJU\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "ratelimit-limit",
+              "value": "100"
+            },
+            {
+              "key": "ratelimit-policy",
+              "value": "100;w=900"
+            },
+            {
+              "key": "ratelimit-remaining",
+              "value": "96"
+            },
+            {
+              "key": "ratelimit-reset",
+              "value": "724"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "87c775d0-46fe-40c7"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"SUCCESS\",\n    \"txId\": \"b5153584-0879-48b7-be70-5c372c51628e\",\n    \"balance\": \"560\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Transaction History",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/wallets/{{userId}}/transactions?asset={{assetSymbol}}&limit=20&offset=0",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "wallets",
+            "{{userId}}",
+            "transactions"
+          ],
+          "query": [
+            {
+              "key": "asset",
+              "value": "{{assetSymbol}}"
+            },
+            {
+              "key": "type",
+              "value": "",
+              "disabled": true
+            },
+            {
+              "key": "limit",
+              "value": "20"
+            },
+            {
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "key": "startDate",
+              "value": "",
+              "disabled": true
+            },
+            {
+              "key": "endDate",
+              "value": "",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 OK — Success",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/{{userId}}/transactions?asset={{assetSymbol}}&limit=20&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "{{userId}}",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "asset",
+                  "value": "{{assetSymbol}}"
+                },
+                {
+                  "key": "type",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "key": "startDate",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "endDate",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:41:39 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "898"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d240d4078739380-MAA"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"df4-TkcXyJTXPfaj/aq3skoUSQ988OY\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "ratelimit-limit",
+              "value": "1000"
+            },
+            {
+              "key": "ratelimit-policy",
+              "value": "1000;w=900"
+            },
+            {
+              "key": "ratelimit-remaining",
+              "value": "994"
+            },
+            {
+              "key": "ratelimit-reset",
+              "value": "136"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "6d5b3cf5-61ea-4777"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"SUCCESS\",\n    \"data\": {\n        \"transactions\": [\n            {\n                \"id\": \"b5153584-0879-48b7-be70-5c372c51628e\",\n                \"idempotencyKey\": \"3ad7310c-7326-4592-ae46-b4c54fe698af\",\n                \"type\": \"SPEND\",\n                \"amount\": \"30\",\n                \"assetSymbol\": \"GOLD\",\n                \"fromUser\": \"00000000-0000-0000-0000-000000000002\",\n                \"toUser\": \"00000000-0000-0000-0000-000000000001\",\n                \"status\": \"SUCCESS\",\n                \"createdAt\": \"2026-02-23T04:40:15.330Z\"\n            },\n            {\n                \"id\": \"532214f1-c471-4667-8224-540761c2f330\",\n                \"idempotencyKey\": \"cece8d67-1e4b-4989-9952-0e1655811841\",\n                \"type\": \"BONUS\",\n                \"amount\": \"50\",\n                \"assetSymbol\": \"GOLD\",\n                \"fromUser\": \"00000000-0000-0000-0000-000000000001\",\n                \"toUser\": \"00000000-0000-0000-0000-000000000002\",\n                \"status\": \"SUCCESS\",\n                \"createdAt\": \"2026-02-23T04:39:38.891Z\"\n            },\n            {\n                \"id\": \"7ac5a836-752e-4666-bb22-db53389b45dc\",\n                \"idempotencyKey\": \"1f8570c8-bdf5-440c-a890-990c2479211e\",\n                \"type\": \"TOP_UP\",\n                \"amount\": \"100\",\n                \"assetSymbol\": \"GOLD\",\n                \"fromUser\": \"00000000-0000-0000-0000-000000000001\",\n                \"toUser\": \"00000000-0000-0000-0000-000000000002\",\n                \"status\": \"SUCCESS\",\n                \"createdAt\": \"2026-02-23T04:37:19.270Z\"\n            },\n            {\n                \"id\": \"05c5f26a-85c9-4af3-9bdf-a7957994b1aa\",\n                \"idempotencyKey\": \"ec11b106-dac0-4ff1-8a93-8f49e323ff17\",\n                \"type\": \"SPEND\",\n                \"amount\": \"30\",\n                \"assetSymbol\": \"GOLD\",\n                \"fromUser\": \"00000000-0000-0000-0000-000000000002\",\n                \"toUser\": \"00000000-0000-0000-0000-000000000001\",\n                \"status\": \"SUCCESS\",\n                \"createdAt\": \"2026-02-22T21:05:26.028Z\"\n            },\n            {\n                \"id\": \"f486fc8e-2dea-4145-9c25-21772d4d4dca\",\n                \"idempotencyKey\": \"c6bcbb27-bfde-4351-80c4-cd6e197b2396\",\n                \"type\": \"BONUS\",\n                \"amount\": \"50\",\n                \"assetSymbol\": \"GOLD\",\n                \"fromUser\": \"00000000-0000-0000-0000-000000000001\",\n                \"toUser\": \"00000000-0000-0000-0000-000000000002\",\n                \"status\": \"SUCCESS\",\n                \"createdAt\": \"2026-02-22T21:05:20.194Z\"\n            },\n            {\n                \"id\": \"89397cc4-958e-457c-a570-17c96c062c34\",\n                \"idempotencyKey\": \"a31a0edd-2068-45ab-b60a-b1dbe2648e58\",\n                \"type\": \"TOP_UP\",\n                \"amount\": \"100\",\n                \"assetSymbol\": \"GOLD\",\n                \"fromUser\": \"00000000-0000-0000-0000-000000000001\",\n                \"toUser\": \"00000000-0000-0000-0000-000000000002\",\n                \"status\": \"SUCCESS\",\n                \"createdAt\": \"2026-02-22T21:05:13.908Z\"\n            },\n            {\n                \"id\": \"c584eee9-0d0d-4d3b-854e-da88b7060c54\",\n                \"idempotencyKey\": \"topup-test-999\",\n                \"type\": \"TOP_UP\",\n                \"amount\": \"50\",\n                \"assetSymbol\": \"GOLD\",\n                \"fromUser\": \"00000000-0000-0000-0000-000000000001\",\n                \"toUser\": \"00000000-0000-0000-0000-000000000002\",\n                \"status\": \"SUCCESS\",\n                \"createdAt\": \"2026-02-22T21:03:05.575Z\"\n            },\n            {\n                \"id\": \"b5ac0a80-ad8f-4580-b4ee-eecc4b2cc890\",\n                \"idempotencyKey\": \"8ec2e38f-bc7b-4db5-9153-e1b4a9d00c67\",\n                \"type\": \"SPEND\",\n                \"amount\": \"30\",\n                \"assetSymbol\": \"GOLD\",\n                \"fromUser\": \"00000000-0000-0000-0000-000000000002\",\n                \"toUser\": \"00000000-0000-0000-0000-000000000001\",\n                \"status\": \"SUCCESS\",\n                \"createdAt\": \"2026-02-22T21:00:19.439Z\"\n            },\n            {\n                \"id\": \"9bdd112c-84c5-424c-add5-5ee9e44de19e\",\n                \"idempotencyKey\": \"c080a94f-9104-4285-95a0-fc08a2293cb2\",\n                \"type\": \"BONUS\",\n                \"amount\": \"50\",\n                \"assetSymbol\": \"GOLD\",\n                \"fromUser\": \"00000000-0000-0000-0000-000000000001\",\n                \"toUser\": \"00000000-0000-0000-0000-000000000002\",\n                \"status\": \"SUCCESS\",\n                \"createdAt\": \"2026-02-22T20:59:58.917Z\"\n            },\n            {\n                \"id\": \"e363da5a-3dac-4113-8b0c-68d6b9ed6e94\",\n                \"idempotencyKey\": \"0c94ca31-0e0f-4c59-be57-623071e61713\",\n                \"type\": \"BONUS\",\n                \"amount\": \"50\",\n                \"assetSymbol\": \"GOLD\",\n                \"fromUser\": \"00000000-0000-0000-0000-000000000001\",\n                \"toUser\": \"00000000-0000-0000-0000-000000000002\",\n                \"status\": \"SUCCESS\",\n                \"createdAt\": \"2026-02-22T20:59:50.277Z\"\n            },\n            {\n                \"id\": \"ab8b9e44-e1b7-465e-901a-6cfe8dcdf64a\",\n                \"idempotencyKey\": \"2e54ec14-f169-4a04-a6a0-4f0117490be9\",\n                \"type\": \"TOP_UP\",\n                \"amount\": \"100\",\n                \"assetSymbol\": \"GOLD\",\n                \"fromUser\": \"00000000-0000-0000-0000-000000000001\",\n                \"toUser\": \"00000000-0000-0000-0000-000000000002\",\n                \"status\": \"SUCCESS\",\n                \"createdAt\": \"2026-02-22T20:58:02.960Z\"\n            }\n        ],\n        \"pagination\": {\n            \"total\": 11,\n            \"limit\": 20,\n            \"offset\": 0,\n            \"returned\": 11,\n            \"hasMore\": false\n        }\n    },\n    \"timestamp\": \"2026-02-23T04:41:39.102Z\",\n    \"requestId\": \"1771821696287-3zglymf\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Transaction by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/wallets/transactions/{{transactionId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "wallets",
+            "transactions",
+            "{{transactionId}}"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 OK — Success",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/transactions/{{transactionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "transactions",
+                "{{transactionId}}"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:42:48 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "312"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d240ef04fa79380-MAA"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"218-0PlWesRfDtxiQR+SUHelFb2+wqw\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "ratelimit-limit",
+              "value": "1000"
+            },
+            {
+              "key": "ratelimit-policy",
+              "value": "1000;w=900"
+            },
+            {
+              "key": "ratelimit-remaining",
+              "value": "992"
+            },
+            {
+              "key": "ratelimit-reset",
+              "value": "66"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "ab867c01-f58b-4db2"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"id\": \"b5153584-0879-48b7-be70-5c372c51628e\",\n    \"idempotencyKey\": \"3ad7310c-7326-4592-ae46-b4c54fe698af\",\n    \"type\": \"SPEND\",\n    \"amount\": \"30\",\n    \"assetSymbol\": \"GOLD\",\n    \"fromUser\": \"00000000-0000-0000-0000-000000000002\",\n    \"toUser\": \"00000000-0000-0000-0000-000000000001\",\n    \"status\": \"SUCCESS\",\n    \"createdAt\": \"2026-02-23T04:40:15.330Z\",\n    \"ledger\": [\n        {\n            \"entryType\": \"DEBIT\",\n            \"walletId\": \"e1a8cc40-a4a3-46b1-a08b-50bd72a0e421\",\n            \"amount\": \"30\",\n            \"balanceAfter\": \"560\"\n        },\n        {\n            \"entryType\": \"CREDIT\",\n            \"walletId\": \"bc404537-263e-4fb2-a29e-fee331f50f2d\",\n            \"amount\": \"30\",\n            \"balanceAfter\": \"999720\"\n        }\n    ]\n}"
+        },
+        {
+          "name": "400 NOT FOUND",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/wallets/transactions/{{transactionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wallets",
+                "transactions",
+                "{{transactionId}}"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Mon, 23 Feb 2026 04:48:50 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "109"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "CF-RAY",
+              "value": "9d2417d259d19361-MAA"
+            },
+            {
+              "key": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "content-security-policy",
+              "value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+            },
+            {
+              "key": "cross-origin-opener-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "cross-origin-resource-policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "etag",
+              "value": "W/\"7f-Ax2Ly6Kt/HL5DleEm36P2RvpgNk\""
+            },
+            {
+              "key": "origin-agent-cluster",
+              "value": "?1"
+            },
+            {
+              "key": "ratelimit-limit",
+              "value": "1000"
+            },
+            {
+              "key": "ratelimit-policy",
+              "value": "1000;w=900"
+            },
+            {
+              "key": "ratelimit-remaining",
+              "value": "996"
+            },
+            {
+              "key": "ratelimit-reset",
+              "value": "826"
+            },
+            {
+              "key": "referrer-policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "rndr-id",
+              "value": "9aa970c8-ffcd-430f"
+            },
+            {
+              "key": "strict-transport-security",
+              "value": "max-age=31536000; includeSubDomains"
+            },
+            {
+              "key": "vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-dns-prefetch-control",
+              "value": "off"
+            },
+            {
+              "key": "x-download-options",
+              "value": "noopen"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "x-permitted-cross-domain-policies",
+              "value": "none"
+            },
+            {
+              "key": "x-render-origin-server",
+              "value": "Render"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cf-cache-status",
+              "value": "DYNAMIC"
+            },
+            {
+              "key": "Server",
+              "value": "cloudflare"
+            },
+            {
+              "key": "alt-svc",
+              "value": "h3=\":443\"; ma=86400"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"FAILED\",\n    \"error\": \"Transaction b5153584-0879-48b7-be70-5c372c51629e not found\",\n    \"timestamp\": \"2026-02-23T04:48:50.815Z\"\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "aliceId",
+      "value": "00000000-0000-0000-0000-000000000002"
+    },
+    {
+      "key": "bobId",
+      "value": "00000000-0000-0000-0000-000000000003"
+    },
+    {
+      "key": "charlieId",
+      "value": "00000000-0000-0000-0000-000000000004"
+    },
+    {
+      "key": "treasuryId",
+      "value": "00000000-0000-0000-0000-000000000001"
+    },
+    {
+      "key": "userId",
+      "value": "00000000-0000-0000-0000-000000000002"
+    },
+    {
+      "key": "assetSymbol",
+      "value": "GOLD"
+    },
+    {
+      "key": "amount",
+      "value": "100"
+    },
+    {
+      "key": "transactionId",
+      "value": ""
+    }
+  ]
+}
