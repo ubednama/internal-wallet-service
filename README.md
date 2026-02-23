@@ -9,7 +9,7 @@ A closed-loop virtual wallet service for gaming/loyalty platforms. Manages virtu
 | Runtime    | Node.js / TypeScript (Express) | Async, non-blocking I/O; type safety reduces runtime bugs                           |
 | Database   | PostgreSQL (ACID)              | Atomic transactions, row-level locking, constraint guarantees                       |
 | ORM        | Prisma v7                      | Type-safe schema; bypassed with `$executeRaw` for `SELECT … FOR UPDATE`             |
-| Cache      | Redis (`ioredis`)              | Sub-millisecond idempotency checks — first line of defence before touching Postgres |
+| Cache      | Redis (`ioredis`)              | Sub-millisecond idempotency checks — first line of defense before touching Postgres |
 | Validation | Zod v4                         | Runtime schema validation + inferred TypeScript types                               |
 
 ## Architecture Highlights
@@ -92,11 +92,44 @@ npm start        # production
 | Bob             | `00000000-0000-0000-0000-000000000003` | GOLD    | 1,000         |
 | Charlie         | `00000000-0000-0000-0000-000000000004` | DIAMOND | 50            |
 
+## 🚀 Live Deployment
+
+**Base URL:** `https://internal-wallet-service-j441.onrender.com`
+
+The application is live and running on Render with:
+
+- **Database:** Supabase PostgreSQL
+- **Cache:** Upstash Redis
+- **Hosting:** Render Web Service
+
+**Infrastructure Stack:**
+
+- Frontend: API endpoints (REST)
+- Backend: Node.js + Express + TypeScript
+- Database: Supabase (PostgreSQL)
+- Cache: Upstash (Redis)
+- Deployment: Render (Docker container)
+
 ## API
 
-Base path: `http://localhost:3000/api/v1/wallets`
+Base path: `http://localhost:3000/api/v1/wallets` (local) or `https://internal-wallet-service-j441.onrender.com/api/v1/wallets` (production)
 
 All mutating requests require header: `Idempotency-Key: <uuid>`
+
+## 📬 Postman Collection
+
+Import and test all endpoints using the Postman collection:
+
+**[Postman Collection Link](https://dark-eclipse-727260.postman.co/workspace/wallet-service~287822a4-bcc6-4b58-8f4c-a6b54d1f5f9e/collection/32782602-be8b1c97-8b6f-4a7f-a1e1-7c8da234fca3?action=share&creator=32782602)**
+
+Steps to import:
+
+1. Open the Postman link above
+2. Click **"Run in Postman"** (or manually import to your workspace)
+3. All endpoints are pre-configured with:
+   - Correct headers (Idempotency-Key)
+   - Environment variables for live/local URLs
+   - Example request/response bodies
 
 | Method | Endpoint                       | Description                        |
 | ------ | ------------------------------ | ---------------------------------- |
